@@ -15,25 +15,21 @@
         width:100%;
       }
       table td {
-        padding:5px;
-      }
-      button{
-        border-radius:5px;
-        border:.1px solid black;
+        padding:7px;
       }
     </style>
   </head>
   <body>
-   <div class="container" style="width:360px">
+   <div class="container">
      <center>
        <h1>Smart Home</h1>
        <p>Automatic Home Lights</p>
      </center>
-      <table border="0">
-         <table border="0">
+      <table border="1">
+         <table border="1">
            <tr>
              <td>Connection Status</td>
-             <td id="cName"><button type="button" onclick="getDevice()">Search</button></td>
+             <td><button type="button" onclick="getDevice()">Search</button></td>
              <td rowspan="2">
                  <b>Arduino Time</b>
                  <h2 id="time">00:00:00</h2>
@@ -56,13 +52,6 @@
                  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="TM_switch(this.checked)">
                </div>
              </td>
-           </tr>
-           <tr>
-             <td>Set Time :
-             <td>
-              <input type="button" style="width:74px" value="update" onclick="Time_update()"/></td>
-             </td>
-             
            </tr>
          </table>
       </table>
@@ -125,7 +114,7 @@
     <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">SETUP 4</button>
   </div>
   <div class="tab-content" id="v-pills-tabContent">
-
+       <b>CMD : AT#i#t#a#dd#vvv#t</b>
     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
        <div class="p-2">
          <select name="AT_IN" id="AT_IN">
@@ -283,7 +272,7 @@
     <button class="nav-link" id="v-pills-settings-tab1" data-bs-toggle="pill" data-bs-target="#v-pills-settings1" type="button" role="tab" aria-controls="v-pills-settings1" aria-selected="false">INTERVAL 4</button>
   </div>
   <div class="tab-content" id="v-pills-tabContent1">
-       
+       <b>CMD : TM#i#t#00:00#00:00#PP</b>
     <div class="tab-pane fade show active" id="v-pills-home1" role="tabpanel" aria-labelledby="v-pills-home-tab1">
        <div class="p-2">
          <select name="AT_OT" id="AT_OT">
@@ -409,7 +398,7 @@
       //console.log("device",device)
     var server = await device.gatt.connect();
         console.log("Device Connected")
-       console.log(server)
+       // console.log(server)
         
     var service = await server.getPrimaryServices();
         console.log(service)
@@ -422,7 +411,7 @@
           //  console.log(e.target.value);
           var data =read(e.target.value);
              // demo.innerHTML = data;
-              cName.innerHTML= device.name+"<br/>"+"<b>Connected<b/>"
+          
               dMan(data);
         }
         channel[0].startNotifications();
@@ -523,7 +512,7 @@ function bool(x){
     
       var cmd = "AT#"+i+"#"+bool(status)+"#"+input+"#"+check_dt(output)+"#"+check_tp(oValue)+"#"+bool(mode);
       console.log(cmd)
-    if(channel != undefined){
+    if(channel[1]){
       channel[1].writeValue(write(cmd))
     }
     else{
@@ -578,16 +567,6 @@ function bool(x){
        }
     }
   }
-  function Time_update(){
-      var now = new Date();
-      var h = now.getHours();
-      var m = now.getMinutes();
-      var s = now.getSeconds();
-      if(channel != undefined){
-        var cmd = "TS#"+check_dt(h)+":"+check_dt(m)+":"+check_dt(s);
-         channel[1].writeValue(write(cmd))
-      }
-  }
   function Sync(target){
     
   }
@@ -599,7 +578,7 @@ function bool(x){
 <script type="text/javascript" charset="utf-8">
   window.onload = () =>{
     var d = document.getElementsByClassName("form-check-input");
-        //console.log(d);
+        console.log(d);
         for(var i=0;i < d.length;i++){
            d[i].disabled = true;
         }
